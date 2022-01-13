@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tärningsspel</title>
+  </head>
+  <body>
+    <p>Pig tärningsspelet.</p>
+    <p>Två till fyra spelare.</p>
+    <button id="kn1" onclick="knappX()">Test tärning</button>
+    <button onclick="startaOm()">Starta om spelet</button>
+    <p id="spelarval">
+      Välj antal spelare:
+      <button onclick="antalSpelare(2)">2 Spelare</button>
+      <button onclick="antalSpelare(3)">3 Spelare</button>
+      <button onclick="antalSpelare(4)">4 Spelare</button>
+    </p>
+    <p id="startSpelare" visibility="hidden">
+      Vem ska börja:
+      <button onclick="startar(0)">Spelare 1</button>
+      <button onclick="startar(1)">Spelare 2</button>
+      <button id="knapp3" onclick="startar(2)">Spelare 3</button>
+      <button id="knapp4" onclick="startar(3)">Spelare 4</button>
+    </p>
+    <button id="startKnapp" onclick="begin()">Starta spelet!</button>
+    <input type="checkbox" id="specialRule" />Specialvariant vald.
+  </body>
+</html>
+
+<script>
+  "use strict";
+
+  document.getElementById("startSpelare").style.visibility = "hidden";
+  document.getElementById("startKnapp").disabled = true;
+
+  class Player {
+    constructor(points) {
+      this.points = points;
+    }
+  }
+
+  let players = [];
+  let vilkensTur = 0;
+
+  function tarning() {
+    return Math.floor(Math.random() * 6) + 1;
+  }
+
+  function antalSpelare(antal) {
+    document.getElementById("spelarval").style.visibility = "hidden";
+
+    // Skapar spelar array med valt antal spelare
+    for (let i = 0; i < antal; i++) {
+      players[i] = new Player(0);
+    }
+
+    if (antal < 4) {
+      document.getElementById("knapp4").disabled = true;
+    }
+    if (antal < 3) {
+      document.getElementById("knapp3").disabled = true;
+    }
+
+    document.getElementById("startSpelare").style.visibility = "visible";
+  }
+
+  function startar(vem) {
+    vilkensTur = vem;
+    document.getElementById("startSpelare").style.visibility = "hidden";
+    document.getElementById("startKnapp").disabled = false;
+  }
+
+  function knappX() {
+    console.log(tarning()); //Testa tärning
+    console.log(document.getElementById("specialRule").checked); // checkbox true eller false
+    document.getElementById("kn1").disabled = true;
+    setTimeout(function () {
+      document.getElementById("kn1").disabled = false;
+    }, 1000);
+  }
+
+  function startaOm() {
+    document.getElementById("knapp3").disabled = false;
+    document.getElementById("knapp4").disabled = false;
+    document.getElementById("startSpelare").style.visibility = "hidden";
+    document.getElementById("startKnapp").disabled = true;
+    document.getElementById("spelarval").style.visibility = "visible";
+    players.pop();
+    players.pop();
+  }
+
+  function begin() {
+    console.log("start spel1")
+  }
+</script>
