@@ -4,8 +4,7 @@
     <title>Tärningsspel</title>
   </head>
   <body>
-    <p>Pig tärningsspelet.</p>
-    <p>Två till fyra spelare.</p>
+    <p>Pig tärningsspelet. Två till fyra spelare.</p>
     <button id="kn1" onclick="knappX()">Test tärning</button>
     <button onclick="startaOm()">Starta om spelet</button>
     <p id="spelarval">
@@ -23,6 +22,20 @@
     </p>
     <button id="startKnapp" onclick="begin()">Starta spelet!</button>
     <input type="checkbox" id="specialRule" />Specialvariant vald.
+    <p id="spelarLista">
+      Spelare 1 poäng: <span id="sp1Points"></span>. <span id="dinTur1"></span
+      ><br />
+      Spelare 2 poäng: <span id="sp2Points"></span>. <span id="dinTur2"></span
+      ><br />
+      Spelare 3 poäng: <span id="sp3Points"></span>. <span id="dinTur3"></span
+      ><br />
+      Spelare 4 poäng: <span id="sp4Points"></span>. <span id="dinTur4"></span
+      ><br />
+      <button id="tarningKnapp" onclick="slåTärning()">Slå Tärning</button>
+      Tärning = <span id="tärning"></span><br />
+      Poäng denna omgång: <span id="tärningTotal">0</span><br />
+      <button onclick="pass">Omgång klar</button>
+    </p>
   </body>
 </html>
 
@@ -31,6 +44,7 @@
 
   document.getElementById("startSpelare").style.visibility = "hidden";
   document.getElementById("startKnapp").disabled = true;
+  document.getElementById("spelarLista").style.visibility = "hidden";
 
   class Player {
     constructor(points) {
@@ -40,6 +54,7 @@
 
   let players = [];
   let vilkensTur = 0;
+  let omgangPoang = 0;
 
   function tarning() {
     return Math.floor(Math.random() * 6) + 1;
@@ -86,9 +101,69 @@
     document.getElementById("spelarval").style.visibility = "visible";
     players.pop();
     players.pop();
+    document.getElementById("spelarLista").style.visibility = "hidden";
+    document.getElementById("tärning").textContent = " ";
   }
 
   function begin() {
-    console.log("start spel1")
+    document.getElementById("spelarLista").style.visibility = "visible";
+    document.getElementById("startKnapp").disabled = true;
+    document.getElementById("tarningKnapp").disabled = false;
+    skrivPoäng();
+  }
+
+  function slåTärning() {
+    document.getElementById("tarningKnapp").disabled = true;
+    let tarningSlag = tarning();
+    document.getElementById("tärning").textContent = tarningSlag;
+    omgangPoang += tarningSlag;
+    document.getElementById("tärningTotal").textContent = omgangPoang;
+
+    if (tarningSlag == 1) {
+      omgangPoang = 0;
+      document.getElementById("tärningTotal").textContent = omgangPoang;
+    } else {
+    setTimeout(function () {
+      document.getElementById("tarningKnapp").disabled = false;
+    }, 500);
+    }
+  }
+
+  function skrivPoäng() {
+    // Uppdatera poäng i poänglistan
+    document.getElementById("sp1Points").textContent = players[0].points;
+    document.getElementById("sp2Points").textContent = players[1].points;
+    if (players.length > 2) {
+      document.getElementById("sp3Points").textContent = players[2].points;
+    } else {
+      document.getElementById("sp3Points").textContent = " ";
+    }
+    if (players.length > 3) {
+      document.getElementById("sp4Points").textContent = players[3].points;
+    } else {
+      document.getElementById("sp4Points").textContent = " ";
+    }
+
+    // Skriv ut vems tur det är
+    if (vilkensTur == 0) {
+      document.getElementById("dinTur1").textContent = "Din tur!";
+    } else {
+      document.getElementById("dinTur1").textContent = " ";
+    }
+    if (vilkensTur == 1) {
+      document.getElementById("dinTur2").textContent = "Din tur!";
+    } else {
+      document.getElementById("dinTur2").textContent = " ";
+    }
+    if (vilkensTur == 2) {
+      document.getElementById("dinTur3").textContent = "Din tur!";
+    } else {
+      document.getElementById("dinTur3").textContent = " ";
+    }
+    if (vilkensTur == 3) {
+      document.getElementById("dinTur4").textContent = "Din tur!";
+    } else {
+      document.getElementById("dinTur4").textContent = " ";
+    }
   }
 </script>
